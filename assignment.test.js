@@ -11,6 +11,27 @@ mongoose.Promise = global.Promise;
 let mongoServer;
 let server;
 
+// Helper function
+const createEmployees = (n, cb) => {
+	let promises = [];
+	for (let i = 0; i < n; i++) {
+		promises.push(
+			new Promise((resolve, reject) => {
+				new Employee({ name: 'Bob', jobTitles: ['worker'] })
+					.save((err, employee) => {
+						if (err) {
+							console.log('--error--');
+						}
+					})
+					.then(res => {
+						resolve();
+					});
+			})
+		);
+	}
+	Promise.all(promises).then(cb);
+};
+
 beforeAll(() => {
 	return new Promise((resolve, reject) => {
 		mongoServer = new mongo();
@@ -84,15 +105,31 @@ describe('index', () => {
 					console.log('--error--');
 				}
 			});
-
+			new Employee({ name: 'Bob2', jobTitles: ['builder', 'boss'] }).save((err, employee) => {
+				if (err) {
+					console.log('--error--');
+				}
+			});
 			request(server)
 				.get('/')
 				.expect(200)
 				.then(res => {
-					console.log(res.body.data[0].name);
 					expect(res.body.data[0].name).toEqual('Bob');
 					done();
 				});
+		});
+
+		test('should have 20 employees', done => {
+			createEmployees(20, () => {
+				request(server)
+					.get('/')
+					.expect(200)
+					.then(res => {
+						console.log(res.body.data.length);
+						expect(res.body.data.length).toBe(20);
+						done();
+					});
+			});
 		});
 	});
 });
