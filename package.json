@@ -1,28 +1,30 @@
 {
-  "name": "veft-testing-assignment",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Arnar Þór Sveinsson <arnar.th92@gmail.com>",
-  "license": "MIT",
-  "scripts": {
-    "start": "babel-watch index.js --presets env",
-    "test": "jest"
-  },
-  "dependencies": {
-    "express": "4.16.2",
-    "mongoose": "4.12.3"
-  },
-  "devDependencies": {
-    "babel-core": "6.26.0",
-    "babel-jest": "21.2.0",
-    "babel-preset-env": "1.6.0",
-    "babel-watch": "2.0.7",
-    "jest": "21.2.1",
-    "supertest": "3.0.0"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.js?$": "babel-jest"
-    }
-  }
+	"name": "veft-testing-assignment",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "Arnar Þór Sveinsson <arnar.th92@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"start": "babel-watch index.js",
+		"test": "jest"
+	},
+	"dependencies": {
+		"express": "4.16.2",
+		"mongoose": "4.12.3",
+		"request": "^2.83.0"
+	},
+	"devDependencies": {
+		"babel-core": "6.26.0",
+		"babel-jest": "21.2.0",
+		"babel-preset-env": "1.6.0",
+		"babel-watch": "2.0.7",
+		"jest": "21.2.1",
+		"mongodb-memory-server": "1.6.1",
+		"supertest": "3.0.0"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.js?$": "babel-jest"
+		}
+	}
 }
