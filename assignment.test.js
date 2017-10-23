@@ -84,6 +84,10 @@ beforeAll(() => {
 	});
 });
 
+afterAll(() => {
+	mongoServer.stop();
+});
+
 afterEach(() => {
 	return new Promise((resolve, reject) => {
 		Employee.deleteMany({}, (err, data) => {
