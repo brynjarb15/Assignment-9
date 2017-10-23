@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should have 10 employees 1`] = `
+Array [
+  Object {
+    "jobTitles": Array [
+      "worker",
+    ],
+    "name": "Bob",
+  },
+  Object {
+    "jobTitles": Array [
+      "builder",
+    ],
+    "name": "Alice",
+  },
+  Object {
+    "jobTitles": Array [
+      "worker",
+    ],
+    "name": "Bob",
+  },
+  Object {
+    "jobTitles": Array [
+      "builder",
+    ],
+    "name": "Alice",
+  },
+  Object {
+    "jobTitles": Array [
+      "worker",
+    ],
+    "name": "Bob",
+  },
+  Object {
+    "jobTitles": Array [
+      "builder",
+    ],
+    "name": "Alice",
+  },
+  Object {
+    "jobTitles": Array [
+      "worker",
+    ],
+    "name": "Bob",
+  },
+  Object {
+    "jobTitles": Array [
+      "builder",
+    ],
+    "name": "Alice",
+  },
+  Object {
+    "jobTitles": Array [
+      "worker",
+    ],
+    "name": "Bob",
+  },
+  Object {
+    "jobTitles": Array [
+      "builder",
+    ],
+    "name": "Alice",
+  },
+]
+`;

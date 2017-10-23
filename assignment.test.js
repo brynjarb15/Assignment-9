@@ -13,11 +13,20 @@ let server;
 
 // Helper function
 const createEmployees = (n, cb) => {
+	let name;
+	let jobTitles = [];
 	let promises = [];
 	for (let i = 0; i < n; i++) {
+		if (i % 2 == 0) {
+			name = 'Bob';
+			jobTitles = ['worker'];
+		} else {
+			name = 'Alice';
+			jobTitles = ['builder'];
+		}
 		promises.push(
 			new Promise((resolve, reject) => {
-				new Employee({ name: 'Bob', jobTitles: ['worker'] })
+				new Employee({ name: name, jobTitles: jobTitles })
 					.save((err, employee) => {
 						if (err) {
 							console.log('--error--');
@@ -31,7 +40,34 @@ const createEmployees = (n, cb) => {
 	}
 	Promise.all(promises).then(cb);
 };
+/*
+const createEmployees = (n, cb) => {
+	let name;
+	let jobTitles = [];
+	let promises = [];
 
+	new Promise((resolve, reject) => {
+		for (let i = 0; i < n; i++) {
+			if (i % 2 == 0) {
+				name = 'Bob';
+				jobTitles = ['worker'];
+			} else {
+				name = 'Alice';
+				jobTitles = ['builder'];
+			}
+			new Employee({ name: name, jobTitles: jobTitles })
+				.save((err, employee) => {
+					if (err) {
+						console.log('--error--');
+					}
+				})
+				.then(res => {
+					resolve();
+				});
+		}
+	}).then(cb);
+};
+*/
 beforeAll(() => {
 	return new Promise((resolve, reject) => {
 		mongoServer = new mongo();
@@ -99,24 +135,16 @@ describe('index', () => {
 				});
 		});
 
-		test('should have the name Bob', done => {
-			new Employee({ name: 'Bob', jobTitles: ['worker'] }).save((err, employee) => {
-				if (err) {
-					console.log('--error--');
-				}
+		test('should have the name Bob of the first empolyee', done => {
+			createEmployees(1, () => {
+				request(server)
+					.get('/')
+					.expect(200)
+					.then(res => {
+						expect(res.body.data[0].name).toEqual('Bob');
+						done();
+					});
 			});
-			new Employee({ name: 'Bob2', jobTitles: ['builder', 'boss'] }).save((err, employee) => {
-				if (err) {
-					console.log('--error--');
-				}
-			});
-			request(server)
-				.get('/')
-				.expect(200)
-				.then(res => {
-					expect(res.body.data[0].name).toEqual('Bob');
-					done();
-				});
 		});
 
 		test('should have 20 employees', done => {
@@ -125,8 +153,24 @@ describe('index', () => {
 					.get('/')
 					.expect(200)
 					.then(res => {
-						console.log(res.body.data.length);
 						expect(res.body.data.length).toBe(20);
+						done();
+					});
+			});
+		});
+
+		test('should have 10 employees', done => {
+			createEmployees(10, () => {
+				request(server)
+					.get('/')
+					.expect(200)
+					.then(res => {
+						const resultWitoutIds = res.body.data.map(({ name, jobTitles }) => ({
+							name,
+							jobTitles
+						}));
+						console.log(resultWitoutIds);
+						expect(resultWitoutIds).toMatchSnapshot('should have 10 employees');
 						done();
 					});
 			});
