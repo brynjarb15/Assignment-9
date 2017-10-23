@@ -1,10 +1,11 @@
 import * as add from './add';
-import { loop } from './index';
+import { loop, throws } from './index';
 import { Employee } from './models';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import mongo from 'mongodb-memory-server';
 import app from './app.js';
+import * as errorFunction from './errorFunction';
 
 mongoose.Promise = global.Promise;
 let mongoServer;
@@ -40,6 +41,15 @@ describe('index', () => {
 			const addSpy = jest.spyOn(add, 'add');
 			loop(3);
 			expect(addSpy).toHaveBeenCalledTimes(3);
+		});
+	});
+
+	describe('throw', () => {
+		test('should return 3 if 3 is used', () => {
+			errorFunction.default = jest.fn();
+			throws(3, n => {
+				expect(n).toBe(3);
+			});
 		});
 	});
 
