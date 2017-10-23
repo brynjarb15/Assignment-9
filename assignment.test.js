@@ -71,8 +71,26 @@ describe('index', () => {
 		test('should return empty array', done => {
 			request(server)
 				.get('/')
+				.expect(200)
 				.then(res => {
 					expect(res.body).toEqual({ data: [] });
+					done();
+				});
+		});
+
+		test('should have the name Bob', done => {
+			new Employee({ name: 'Bob', jobTitles: ['worker'] }).save((err, employee) => {
+				if (err) {
+					console.log('--error--');
+				}
+			});
+
+			request(server)
+				.get('/')
+				.expect(200)
+				.then(res => {
+					console.log(res.body.data[0].name);
+					expect(res.body.data[0].name).toEqual('Bob');
 					done();
 				});
 		});

@@ -3,7 +3,7 @@ import { Employee } from './models';
 
 mongoose.Promise = global.Promise;
 mongoose
-	.connect('mongodb://brynjar:brynjar@ds121575.mlab.com:21575/bilaverkefni', {
+	.connect('mongodb://<my-db>@ds121575.mlab.com:1337/veft', {
 		useMongoClient: true
 	})
 	.then(db => {
