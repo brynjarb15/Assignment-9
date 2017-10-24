@@ -15,17 +15,16 @@ let server;
 const createEmployees = (n, cb) => {
 	let name;
 	let jobTitles = [];
-	let promises = [];
-	for (let i = 0; i < n; i++) {
-		if (i % 2 == 0) {
-			name = 'Bob';
-			jobTitles = ['worker'];
-		} else {
-			name = 'Alice';
-			jobTitles = ['builder'];
-		}
-		promises.push(
-			new Promise((resolve, reject) => {
+	let promise = new Promise((resolve, reject) => {
+		for (let i = 0; i < n; i++) {
+			setTimeout(() => {
+				if (i % 2 == 0) {
+					name = 'Bob';
+					jobTitles = ['worker'];
+				} else {
+					name = 'Alice';
+					jobTitles = ['builder'];
+				}
 				new Employee({ name: name, jobTitles: jobTitles })
 					.save((err, employee) => {
 						if (err) {
@@ -35,39 +34,12 @@ const createEmployees = (n, cb) => {
 					.then(res => {
 						resolve();
 					});
-			})
-		);
-	}
-	Promise.all(promises).then(cb);
-};
-/*
-const createEmployees = (n, cb) => {
-	let name;
-	let jobTitles = [];
-	let promises = [];
-
-	new Promise((resolve, reject) => {
-		for (let i = 0; i < n; i++) {
-			if (i % 2 == 0) {
-				name = 'Bob';
-				jobTitles = ['worker'];
-			} else {
-				name = 'Alice';
-				jobTitles = ['builder'];
-			}
-			new Employee({ name: name, jobTitles: jobTitles })
-				.save((err, employee) => {
-					if (err) {
-						console.log('--error--');
-					}
-				})
-				.then(res => {
-					resolve();
-				});
+			}, 200);
 		}
-	}).then(cb);
+	});
+	promise.then(cb);
 };
-*/
+
 beforeAll(() => {
 	return new Promise((resolve, reject) => {
 		mongoServer = new mongo();
@@ -173,7 +145,6 @@ describe('index', () => {
 							name,
 							jobTitles
 						}));
-						console.log(resultWitoutIds);
 						expect(resultWitoutIds).toMatchSnapshot('should have 10 employees');
 						done();
 					});
